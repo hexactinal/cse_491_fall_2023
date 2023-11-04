@@ -34,9 +34,11 @@ namespace cse491 {
     }
     
     /// Checks if the given property is set on this CellType.
-    bool HasProperty(const std::string& property){
+    bool HasProperty(const std::string& property) const {
       return properties.count(property);
     }
+    
+    constexpr static std::string CELL_WALL = "wall";
   };
 
   /// @brief Available CellTypes will be passed around as a vector of options.
