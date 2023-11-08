@@ -48,13 +48,8 @@ If the player interface gets to the win flag, then it moves on to the next floor
 ## Language.hpp
 - All language functions are in the `worldlang` namespace
 
-### PEGTL structures
-- `grammar`: Appears to be currently unused as of writing.
-- `number`: Something that can be represented with regex `\-?[0-9]+(.[0-9]+)?`
-- `identifier`:
-- `identifier_list`:
-- `op_prio_add`:
-- todo: do we want to document every part of the language here?
+### Example syntax
+- todo: add example syntax
 
 ### Functions
 - `std::vector<Unit> parse_to_code(std::string program)`: Converts a program string into code units using PEGTL
@@ -64,7 +59,6 @@ If the player interface gets to the win flag, then it moves on to the next floor
 
 ## ProgramExecutor.hpp
 - All code is inside the `ProgramExecutor` class
-- Only has a default constructor
 
 ### Functions
 - `void registerFunction(std::string name, Callable callable)`: Registers the lambda function `callable` with name `name` to the executor.
