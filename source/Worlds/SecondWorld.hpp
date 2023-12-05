@@ -40,6 +40,12 @@ const std::string COMBAT_SCRIPT = "../assets/scripts/g4_agent_attack.ws";
 /// @brief Filename for world initialization script
 const std::string WORLD_LOAD_SCRIPT = "../assets/scripts/g4_world_load.ws";
 
+/// @brief Filename for second floor initialization script
+const std::string WORLD_LOAD_SCRIPT_2 = "../assets/scripts/g4_world_2_load.ws";
+
+/// @brief Filename for final floor initialization script
+const std::string WORLD_LOAD_SCRIPT_3 = "../assets/scripts/g4_world_3_load.ws";
+
 /**
  * Creates a world with agents and a win flag
  */
@@ -59,16 +65,6 @@ class SecondWorld : public cse491::WorldBase {
    * @param pos The player position
    */
   void SwitchGrid(cse491::AgentBase& agent, cse491::GridPosition& pos) {
-    if (world_filename == FIRST_FLOOR_FILENAME) {
-      world_filename = SECOND_FLOOR_FILENAME;
-      agents_filename = "../assets/second_floor_input.json";
-    } else if (world_filename == SECOND_FLOOR_FILENAME) {
-      world_filename = FINAL_FLOOR_FILENAME;
-      agents_filename = "../assets/third_floor_input.json";
-    }
-
-    agent.Notify("Going to " + world_filename, "world_switched");
-
     // Need to clear item_map so that items don't stay for the next floor.
     // Don't clear items held in an inventory.
     // TODO: How do chests interfere with this?
@@ -86,9 +82,18 @@ class SecondWorld : public cse491::WorldBase {
     	}
     }
 
+    if (world_filename == FIRST_FLOOR_FILENAME) {
+      pe.runFile(WORLD_LOAD_SCRIPT_2);
+      agents_filename = "../assets/second_floor_input.json";
+    } else if (world_filename == SECOND_FLOOR_FILENAME) {
+      pe.runFile(WORLD_LOAD_SCRIPT_3);
+      agents_filename = "../assets/third_floor_input.json";
+    }
+
+    agent.Notify("Going to " + world_filename, "world_switched");
+
     // Resetting the current new_position to the top left of the new grid.
     pos = cse491::GridPosition(0, 0);
-    main_grid.Read(world_filename, type_options);
     LoadFromFile(agents_filename);
   }
 
@@ -213,7 +218,7 @@ class SecondWorld : public cse491::WorldBase {
 
       AddAgent<cse491::PacingAgent>(agent_name)
           .SetPosition(x_pos, y_pos)
-          .SetProperty("MaxHealth", BASE_MAX_HEALTH + additional_max_health);
+          .SetProperty("Health", BASE_MAX_HEALTH + additional_max_health);
     }
   }
 
